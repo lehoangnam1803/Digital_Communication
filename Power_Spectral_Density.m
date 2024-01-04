@@ -49,4 +49,5 @@ BW_bounded = x_high_bound - x_low_bound;
 %% Plot
 fplot(h, [fmin fmax]);
 ylim([0 1e-4]);
+xlabel('Frequency (Hz)')
 grid on
