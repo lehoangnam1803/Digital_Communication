@@ -26,16 +26,28 @@ for i = 1:length(t)
 end
 
 %% 5. Compress the sample signal %mSpeech’
-mu = 255; % or A = ???; use the standard value
+mu = 255; % or 
+A = 87.6; %use the standard value
 y_max = V_p;
 x_max = V_p;
 % Replace the compress equation for u-law and A-law
 % with x is the 'mSpeech' signal
 s_c_5 = sign(x).*y_max.*(log(1+mu.*abs(x)/x_max))./(log(1+mu));
 
+%% A law
+y = zeros(length(t),1);
+for i=1:length(t)
+    r = abs(x(i))/x_max;
+    if r<= 1/A
+        y(i) = sign(x(i)).*y_max.*(A.*r)./(1+log(A));
+    else
+        y(i) = sign(x(i)).*y_max.*(1+ log(A.*r))./(1+log(A));
+    end
+end
 
 %% 6. Quantize the compress signal
 s_q_6 = quan_uni(s_c_5,q);
+%s_q_6 = quan_uni(y,q);
 
 %% 7. Expand
 s_e_7 = sign(s_q_6).*(-1 + (1+mu).^(abs(s_q_6)))./(mu);
@@ -49,12 +61,16 @@ plot(t, x,'LineWidth',2);
 xlim([0.52 0.59])
 grid on
 hold on
+
 % Plot the sample signal and the quantization signal
 plot(t,s_q_2,'ro','MarkerSize',6,'MarkerEdgeColor','r','MarkerFaceColor','r');
+
 % Plot the compress signal;
 plot(t,s_c_5, '-.');
+
 % plot the quantized signal
 plot(t,s_q_6,'b^','MarkerSize',6,'MarkerEdgeColor','b','MarkerFaceColor','b');
+
 % Plot expansion
 plot(t,s_e_7,'g*','MarkerSize',6,'MarkerEdgeColor','g','MarkerFaceColor','g');
 legend('Sample signal','Quantitize signal', 'Compress signal', 'Quantize the compress', 'Expansion')
