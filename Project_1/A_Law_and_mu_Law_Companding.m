@@ -40,7 +40,7 @@ x_max = V_p;
 % with x is the 'mSpeech' signal
 s_c_5 = sign(x).*y_max.*(log(1+mu.*abs(x)/x_max))./(log(1+mu));
 % Plot the compress signal;
-plot(t,s_c_5);
+plot(t,s_c_5, '-.');
 
 %% 6. Quantize the compress signal and plot the quantized signal
 s_q_6 = quan_uni(s_c_5,q);
