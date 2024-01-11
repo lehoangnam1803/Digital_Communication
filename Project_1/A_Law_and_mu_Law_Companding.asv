@@ -1,0 +1,14 @@
+clear;clc
+% 1. Load speech signal
+[mSpeech,Fs] = audioread("MaleSpeech-16-4-mono-20secs.wav");
+%sound(mSpeech,Fs)
+% Consider the speech signal in 1.5s
+t = 0:1/Fs:1.5;
+plot(t,mSpeech(1:length(t)),'LineWidth',2);
+hold on
+
+% 2. Quantize the sample signal
+L = 16; %the number of quantization levels
+V_p = 0.5625; %the peak voltage of signal
+% Determine the single quantile interval ?-wide
+q = 4.*(V_p.^2)/(L.^2); % Use the exact equation
