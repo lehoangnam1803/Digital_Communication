@@ -46,8 +46,8 @@ for i=1:length(t)
 end
 
 %% 6. Quantize the compress signal
-s_q_6 = quan_uni(s_c_5,q);
-%s_q_6 = quan_uni(y,q);
+%s_q_6 = quan_uni(s_c_5,q);
+s_q_6 = quan_uni(y,q);
 
 %% 7. Expand
 s_e_7 = sign(s_q_6).*(-1 + (1+mu).^(abs(s_q_6)))./(mu);
