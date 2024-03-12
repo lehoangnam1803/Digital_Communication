@@ -50,11 +50,21 @@ end
 s_q_6 = quan_uni(y,q);
 
 %% 7. Expand
-s_e_7 = sign(s_q_6).*(-1 + (1+mu).^(abs(s_q_6)))./(mu);
+s_e_7 = sign(s_q_6).*(-1 + (1+mu).^(abs(s_q_6)))./(mu); % muy-Law
+s_e_7_A = zeros(length(t),1); % A-Law
+exp = 2.718281828;
+for i=1:length(t)
+    r_A = abs(y(i))*(1+log(A));
+    if r_A<1
+        s_e_7_A(i) = sign(y(i))*r_A./A;
+    else
+        s_e_7_A(i) = sign(y(i))*exp.^(r_A-1)./A;
+    end
+end
 
 %% 9. Calculate the average quantization noise power,...
 % the average power of the analog signal and SNR
-e_com = x - s_e_7;
+e_com = x - s_e_7_A;
 
 %% Plot
 plot(t, x,'LineWidth',2);
@@ -72,5 +82,7 @@ plot(t,s_c_5, '-.');
 plot(t,s_q_6,'b^','MarkerSize',6,'MarkerEdgeColor','b','MarkerFaceColor','b');
 
 % Plot expansion
-plot(t,s_e_7,'g*','MarkerSize',6,'MarkerEdgeColor','g','MarkerFaceColor','g');
+plot(t,s_e_7_A,'g*','MarkerSize',6,'MarkerEdgeColor','g','MarkerFaceColor','g');
 legend('Sample signal','Quantitize signal', 'Compress signal', 'Quantize the compress', 'Expansion')
+%plot(t,s_e_7,'g*','MarkerSize',6,'MarkerEdgeColor','g','MarkerFaceColor','g');
+%legend('Sample signal','Quantitize signal', 'Compress signal', 'Quantize the compress', 'Expansion')
