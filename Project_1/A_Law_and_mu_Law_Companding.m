@@ -25,6 +25,8 @@ for i = 1:length(t)
     pow_sig = pow_sig + mSpeech(i)^2;
 end
 
+SNR_a_uni = pow_sig/pow_noise_uni;
+
 %% 5. Compress the sample signal %mSpeech’
 mu = 255; % or 
 A = 87.6; %use the standard value
@@ -65,6 +67,11 @@ end
 %% 9. Calculate the average quantization noise power,...
 % the average power of the analog signal and SNR
 e_com = x - s_e_7_A;
+pow_noise_com = 0;
+for i=1:length(t)
+    pow_noise_com = pow_noise_com + e_com(i).^2;
+end
+SNR_a_com = pow_sig/pow_noise_com;
 
 %% Plot
 plot(t, x,'LineWidth',2);
